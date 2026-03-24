@@ -1,11 +1,14 @@
-PATCH: Phase 4 Fix 1
-BASELINE: gadstyle-shortlink-d1-staging-phase4.zip
+PATCH: Phase 5
+BASELINE: gadstyle-shortlink-d1-staging-phase4-fix2.zip
 APPLIED_DIRECTLY_ON_TOP_OF_PREVIOUS_STABLE: YES
 
 MODIFIED FILES:
-- lib/validations.ts
-- app/api/admin/links/route.ts
+- lib/env.ts
+- .env.example
 - README.md
+- DEPLOYMENT_GUIDE.md
+- BUILD_NOTES.txt
+- PATCH_MANIFEST.txt
 
 ADDED FILES:
 - none
@@ -14,10 +17,7 @@ DELETED FILES:
 - none
 
 SUMMARY:
-- Fixed staging create-form validation to accept real Gadstyle product/category/brand URL patterns.
-- Increased code length limit to avoid false rejections on longer human-readable codes.
-- Replaced generic validation response with the first real field-specific error.
-
-
-Phase 4 Fix 2
-- Fixed TypeScript build error in lib/public-validations.ts by removing invalid .pick() usage on a ZodEffects schema and replacing it with a standalone public schema compatible with Next.js production build.
+- Prepared the frontend production cutover package for Vercel -> Worker -> D1.
+- Relaxed env bootstrap so Worker+D1 mode can run without hard-requiring DATABASE_URL when SHORTLINK_API_BASE_URL is present.
+- Kept route contract unchanged: /p/{id}, /c/{id}, /b/{id}, /s/{code}.
+- Recommended keeping Neon env for first rollout so rollback stays simple.
