@@ -29,7 +29,7 @@ export function OpenAppLanding({ appHost, appPath, canonicalUrl, headline }: Pro
 
     if (isAndroid) {
       fallbackTimer = window.setTimeout(() => {
-        setStatus("App not found. Redirecting to Google Play…");
+        setStatus("App not found. Opening the website fallback…");
         window.location.replace(intentUrl);
       }, 200);
       return () => {

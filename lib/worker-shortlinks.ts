@@ -1,5 +1,5 @@
 import { env } from '@/lib/env';
-import type { SupportedTargetType } from '@/lib/links';
+import type { SupportedTargetType } from '@/lib/shortlink-contract';
 
 export type WorkerShortlink = {
   id: number;

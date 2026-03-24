@@ -1,4 +1,4 @@
-Phase 5
-- Production cutover package for the live Vercel shortlink frontend.
-- Worker code remains on the already-stable Phase 4 deployment.
-- Frontend env handling is relaxed so Worker+D1 mode can boot without hard-requiring DATABASE_URL.
+Phase 3
+- Final hardening / cleanup package for the live Vercel shortlink frontend.
+- Worker + D1 is the only active production data path.
+- Public routing remains unchanged and ID-based.

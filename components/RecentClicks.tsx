@@ -1,4 +1,3 @@
-
 import { formatDate } from '@/lib/utils';
 
 export type AdminRecentClickRow = {
@@ -12,7 +11,7 @@ export type AdminRecentClickRow = {
   };
 };
 
-export function RecentClicks({ clicks }: { clicks: AdminRecentClickRow[] }) {
+export function RecentClicks({ clicks, loading = false, error = null }: { clicks: AdminRecentClickRow[]; loading?: boolean; error?: string | null }) {
   return (
     <div className="card table-card">
       <div className="table-head">
@@ -21,6 +20,9 @@ export function RecentClicks({ clicks }: { clicks: AdminRecentClickRow[] }) {
           <p className="muted-text">Latest redirect activity across short code and direct routes.</p>
         </div>
       </div>
+
+      {error ? <p className="error-text inline-error">{error}</p> : null}
+
       <div className="responsive-table">
         <table>
           <thead>
@@ -32,7 +34,11 @@ export function RecentClicks({ clicks }: { clicks: AdminRecentClickRow[] }) {
             </tr>
           </thead>
           <tbody>
-            {clicks.length === 0 ? (
+            {loading ? (
+              <tr>
+                <td colSpan={4} className="empty-cell">Loading recent clicks…</td>
+              </tr>
+            ) : clicks.length === 0 ? (
               <tr>
                 <td colSpan={4} className="empty-cell">No clicks recorded yet.</td>
               </tr>

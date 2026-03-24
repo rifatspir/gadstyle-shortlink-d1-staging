@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { buildDefaultAppPath } from '@/lib/public-shortlinks';
+import { buildDefaultAppPath } from '@/lib/shortlink-contract';
 
 const allowedCanonicalHosts = ['gadstyle.com', 'www.gadstyle.com', 'app.gadstyle.com'];
 

@@ -1,6 +1,8 @@
+'use client';
 
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
+import type { WorkerAdminPagination } from '@/lib/worker-admin';
 
 export type AdminLinkRow = {
   id: string | number;
@@ -19,7 +21,23 @@ function getDirectPath(link: AdminLinkRow) {
   return `/s/${link.code}`;
 }
 
-export function LinksTable({ links, search }: { links: AdminLinkRow[]; search: string }) {
+export function LinksTable({
+  links,
+  search,
+  loading = false,
+  error = null,
+  pagination,
+  onSearchChange,
+  onPageChange,
+}: {
+  links: AdminLinkRow[];
+  search: string;
+  loading?: boolean;
+  error?: string | null;
+  pagination?: WorkerAdminPagination;
+  onSearchChange?: (value: string) => void;
+  onPageChange?: (page: number) => void;
+}) {
   return (
     <div className="card table-card">
       <div className="table-head">
@@ -27,11 +45,21 @@ export function LinksTable({ links, search }: { links: AdminLinkRow[]; search: s
           <h2>Shortlinks</h2>
           <p className="muted-text">Search by code, canonical URL, or target ID.</p>
         </div>
-        <form method="get" className="search-form">
-          <input name="q" defaultValue={search} placeholder="Search links..." />
-          <button type="submit" className="ghost-button">Search</button>
-        </form>
+        <div className="search-form">
+          <input
+            name="q"
+            value={search}
+            onChange={(event) => onSearchChange?.(event.target.value)}
+            placeholder="Search links..."
+            autoComplete="off"
+          />
+          <button type="button" className="ghost-button" disabled>
+            {loading ? 'Searching…' : 'Search'}
+          </button>
+        </div>
       </div>
+
+      {error ? <p className="error-text inline-error">{error}</p> : null}
 
       <div className="responsive-table">
         <table>
@@ -46,7 +74,11 @@ export function LinksTable({ links, search }: { links: AdminLinkRow[]; search: s
             </tr>
           </thead>
           <tbody>
-            {links.length === 0 ? (
+            {loading ? (
+              <tr>
+                <td colSpan={6} className="empty-cell">Loading shortlinks…</td>
+              </tr>
+            ) : links.length === 0 ? (
               <tr>
                 <td colSpan={6} className="empty-cell">No shortlinks found.</td>
               </tr>
@@ -77,6 +109,22 @@ export function LinksTable({ links, search }: { links: AdminLinkRow[]; search: s
           </tbody>
         </table>
       </div>
+
+      {pagination ? (
+        <div className="table-footer">
+          <p className="muted-text">
+            Showing page {pagination.page} of {pagination.totalPages} · {pagination.totalItems} total links
+          </p>
+          <div className="pager-actions">
+            <button type="button" className="ghost-button pager-button" disabled={pagination.page <= 1 || loading} onClick={() => onPageChange?.(pagination.page - 1)}>
+              Previous
+            </button>
+            <button type="button" className="ghost-button pager-button" disabled={pagination.page >= pagination.totalPages || loading} onClick={() => onPageChange?.(pagination.page + 1)}>
+              Next
+            </button>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
