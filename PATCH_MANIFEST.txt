@@ -1,0 +1,30 @@
+Build: build8-hotfix2-phase3-shortlink-reliability
+Base: gadstyle-shortlink-service-build7-web-fallback-install-ux.zip
+Scope: Phase 3 Build 1 - shortlink reliability, self-heal, and cache hardening only
+
+Modified Files:
+- lib/public-shortlinks.ts
+- app/api/shortlinks/route.ts
+- app/api/shortlinks/resolve/route.ts
+- app/p/[id]/page.tsx
+- app/c/[id]/page.tsx
+- app/b/[id]/page.tsx
+- app/s/[code]/page.tsx
+- PATCH_MANIFEST.txt
+
+Added Files:
+- none
+
+Deleted Files:
+- none
+
+Notes:
+- Adds self-heal update for reusable active records when canonical URL, target slug, or app path drifted.
+- Forces public shortlink create/resolve and landing pages to no-store / dynamic behavior to reduce stale Vercel or browser cache behavior.
+- No dashboard/admin actions changed in this build.
+
+
+Hotfix 3:
+- Shortlink self-heal no longer trusts incoming app_path for public links.
+- Public product/category/brand targets now always enforce canonical ID-based app paths: /p/{id}, /c/{id}, /b/{id}.
+- Prevents stale or malformed upstream app_path values from breaking working brand/category deeplinks.

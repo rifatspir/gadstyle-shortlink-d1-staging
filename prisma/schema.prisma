@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum TargetType {
+  product
+  category
+  brand
+}
+
+enum RouteType {
+  short_code
+  direct_product
+  direct_category
+  direct_brand
+}
+
+model ShortLink {
+  id           String      @id @default(cuid())
+  code         String      @unique @db.VarChar(80)
+  targetType   TargetType
+  targetId     String      @db.VarChar(64)
+  targetSlug   String?     @db.VarChar(255)
+  canonicalUrl String      @db.Text
+  appPath      String?     @db.VarChar(255)
+  clickCount   Int         @default(0)
+  isActive     Boolean     @default(true)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  clickEvents  ClickEvent[]
+
+  @@index([targetType, targetId])
+  @@index([isActive, updatedAt])
+}
+
+model ClickEvent {
+  id          String    @id @default(cuid())
+  shortLinkId String
+  routeType   RouteType
+  ipAddress   String?   @db.VarChar(64)
+  userAgent   String?   @db.Text
+  referer     String?   @db.Text
+  createdAt   DateTime  @default(now())
+
+  shortLink   ShortLink @relation(fields: [shortLinkId], references: [id], onDelete: Cascade)
+
+  @@index([shortLinkId, createdAt])
+  @@index([createdAt])
+}

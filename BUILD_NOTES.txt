@@ -1,0 +1,1 @@
+Added d.ts include patterns to tsconfig so local bcryptjs declaration is picked up during Vercel build.
