@@ -1,3 +1,11 @@
+function BrandMark() {
+  return (
+    <div className="brand-mark large" aria-hidden="true">
+      <span>GS</span>
+    </div>
+  );
+}
+
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ error?: string; next?: string }> }) {
   const params = await searchParams;
   const next = params.next || '/admin';
@@ -5,10 +13,15 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   return (
     <main className="login-wrap">
       <section className="card login-card">
-        <p className="eyebrow">Gadstyle Internal</p>
-        <h1>Admin Login</h1>
+        <div className="login-branding">
+          <BrandMark />
+          <div>
+            <p className="eyebrow">Gadstyle Internal</p>
+            <h1>Shortlink Admin</h1>
+          </div>
+        </div>
         <p className="muted-text login-help">
-          Phase 1 uses one secure internal admin login. Later, this can be replaced with role-based accounts if you need multiple staff users.
+          Lightweight admin for ID-based product, category, and brand shortlinks. Current production stack stays Vercel + Worker + D1.
         </p>
 
         <form action="/api/auth/login" method="post" className="login-form">

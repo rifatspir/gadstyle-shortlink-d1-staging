@@ -1,11 +1,22 @@
 import Link from 'next/link';
 
+function BrandMark() {
+  return (
+    <div className="brand-mark" aria-hidden="true">
+      <span>GS</span>
+    </div>
+  );
+}
+
 export function Header() {
   return (
     <header className="site-header">
-      <div>
-        <p className="eyebrow">Gadstyle</p>
-        <h1>Shortlink Service</h1>
+      <div className="brand-lockup">
+        <BrandMark />
+        <div>
+          <p className="eyebrow">Gadstyle</p>
+          <h1>Shortlink Service</h1>
+        </div>
       </div>
       <nav className="top-nav">
         <Link href="/admin">Dashboard</Link>

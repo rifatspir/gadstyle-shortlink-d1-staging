@@ -1,27 +1,19 @@
-PATCH: Phase 2
-BASELINE: gadstyle-shortlink-service-phase3-final-hardening-cleanup.zip
-APPLIED_DIRECTLY_ON_TOP_OF_PREVIOUS_STABLE: YES
+Phase 3 - Easier admin creation + branding polish
 
-MODIFIED FILES:
-- app/admin/page.tsx
-- app/api/admin/links/route.ts
+Modified files:
+- app/layout.tsx
 - app/globals.css
-- components/LinksTable.tsx
-- components/RecentClicks.tsx
-- lib/worker-admin.ts
-- PATCH_MANIFEST.txt
+- app/login/page.tsx
+- components/Header.tsx
+- components/LinkForm.tsx
 
-ADDED FILES:
-- app/api/admin/recent-clicks/route.ts
-- app/api/admin/stats/route.ts
-- components/AdminDashboardClient.tsx
+Added files:
+- app/icon.svg
+- app/apple-icon.svg
+- app/favicon.ico
 
-DELETED FILES:
-- none
-
-SUMMARY:
-- Admin dashboard now loads stats, links, and recent clicks independently.
-- Links table now uses real server-side pagination with default page size 20.
-- Search now uses debounced client-side fetching without full page reload.
-- Dashboard routes now proxy real Worker-backed stats, links, and recent-click data.
-- Public shortlink routes remain unchanged: /p/{id}, /c/{id}, /b/{id}, /s/{code}.
+Notes:
+- Canonical URL paste now auto-detects target type, numeric ID, display slug, app path, and default code style.
+- Routing contract remains unchanged and ID-based.
+- Branding polish added with lightweight in-app vector assets only; no heavy external image assets added.
+- Worker and Flutter app unchanged in this phase.
