@@ -1,23 +1,17 @@
-PATCH: Phase 5
-BASELINE: gadstyle-shortlink-d1-staging-phase4-fix2.zip
+PATCH: Phase 1 Flutter shortlink share fix support
+BASELINE: gadstyle-shortlink-service-phase5-production.zip
 APPLIED_DIRECTLY_ON_TOP_OF_PREVIOUS_STABLE: YES
 
 MODIFIED FILES:
-- lib/env.ts
-- .env.example
-- README.md
-- DEPLOYMENT_GUIDE.md
-- BUILD_NOTES.txt
 - PATCH_MANIFEST.txt
 
 ADDED FILES:
-- none
+- app/api/shortlinks/resolve-direct/route.ts
 
 DELETED FILES:
 - none
 
 SUMMARY:
-- Prepared the frontend production cutover package for Vercel -> Worker -> D1.
-- Relaxed env bootstrap so Worker+D1 mode can run without hard-requiring DATABASE_URL when SHORTLINK_API_BASE_URL is present.
-- Kept route contract unchanged: /p/{id}, /c/{id}, /b/{id}, /s/{code}.
-- Recommended keeping Neon env for first rollout so rollback stays simple.
+- Added a public resolve-direct API route on the Vercel frontend so Flutter can check for an existing Worker+D1 shortlink by entity type/id before requesting create.
+- Kept public route contract unchanged: /p/{id}, /c/{id}, /b/{id}, /s/{code}.
+- Kept Worker + D1 architecture unchanged and did not reintroduce Neon.
