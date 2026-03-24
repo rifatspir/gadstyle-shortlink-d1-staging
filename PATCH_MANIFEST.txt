@@ -1,17 +1,17 @@
-PATCH: Phase 1 Flutter shortlink share fix support
-BASELINE: gadstyle-shortlink-service-phase5-production.zip
-APPLIED_DIRECTLY_ON_TOP_OF_PREVIOUS_STABLE: YES
-
-MODIFIED FILES:
-- PATCH_MANIFEST.txt
-
-ADDED FILES:
-- app/api/shortlinks/resolve-direct/route.ts
-
-DELETED FILES:
+Build: gadstyle-shortlink-service-phase2-deeplink-route-verification-fix.zip
+Base build: gadstyle-shortlink-service-phase1-shortlink-share-fix.zip
+Applied directly on previous stable build: YES
+Phase: 2
+Summary:
+- Fixed Android app-link fallback so no-app-installed path goes to canonical website target instead of Play Store-only fallback
+- Kept explicit install button for Play Store
+Modified files:
+- components/OpenAppLanding.tsx
+Added files:
 - none
-
-SUMMARY:
-- Added a public resolve-direct API route on the Vercel frontend so Flutter can check for an existing Worker+D1 shortlink by entity type/id before requesting create.
-- Kept public route contract unchanged: /p/{id}, /c/{id}, /b/{id}, /s/{code}.
-- Kept Worker + D1 architecture unchanged and did not reintroduce Neon.
+Deleted files:
+- none
+Verification:
+- Preserved public route contract: /p/{id}, /c/{id}, /b/{id}, /s/{code}
+- Worker + D1 architecture unchanged
+- Neon not reintroduced

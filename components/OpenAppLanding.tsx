@@ -17,8 +17,8 @@ export function OpenAppLanding({ appHost, appPath, canonicalUrl, headline }: Pro
   const appUrl = useMemo(() => `https://${appHost}${appPath}`, [appHost, appPath]);
   const intentUrl = useMemo(() => {
     const cleanPath = appPath.startsWith("/") ? appPath : `/${appPath}`;
-    return `intent://${appHost}${cleanPath}#Intent;scheme=https;package=com.gadstylebd.app;S.browser_fallback_url=${encodeURIComponent(PLAY_STORE_URL)};end`;
-  }, [appHost, appPath]);
+    return `intent://${appHost}${cleanPath}#Intent;scheme=https;package=com.gadstylebd.app;S.browser_fallback_url=${encodeURIComponent(canonicalUrl)};end`;
+  }, [appHost, appPath, canonicalUrl]);
 
   useEffect(() => {
     const ua = navigator.userAgent || "";
