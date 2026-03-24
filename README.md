@@ -44,3 +44,19 @@ Run your normal Prisma deploy step in production so Neon receives the new enum v
 - `POST /api/shortlinks` creates or reuses an active product/category/brand shortlink for Flutter sharing.
 - `GET /api/shortlinks/resolve?code=...` resolves a short code into its target metadata.
 - Shared routes stay on `app.gadstyle.com`, while website SEO stays on the canonical `www.gadstyle.com` URLs.
+
+
+## Phase 3 staging env
+- Add `SHORTLINK_API_BASE_URL=https://gadstyle-shortlink-worker.gadstyle.workers.dev` on the staging Vercel project to route public resolution/create requests through the Cloudflare Worker + D1 path.
+- Keep the existing database variables during this phase because the admin dashboard list/stats still read from the current database.
+
+
+## Phase 4
+- Admin dashboard list/stats now prefer Worker+D1 when SHORTLINK_API_BASE_URL is set.
+- Admin create writes directly to Worker+D1 in staging.
+
+
+## Phase 4 Fix 1
+- Accepts real Gadstyle item/category/brand URL formats in admin create form.
+- Shows the first real validation error instead of a generic trusted-URL message.
+- Keeps Worker + D1 staging path unchanged.

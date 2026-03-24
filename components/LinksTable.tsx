@@ -1,21 +1,31 @@
+
 import Link from 'next/link';
-import { ShortLink } from '@prisma/client';
 import { formatDate } from '@/lib/utils';
 
-function getDirectPath(link: ShortLink) {
+export type AdminLinkRow = {
+  id: string | number;
+  code: string;
+  targetType: 'product' | 'category' | 'brand';
+  targetId: string;
+  clickCount: number;
+  isActive: boolean;
+  updatedAt: string | Date;
+};
+
+function getDirectPath(link: AdminLinkRow) {
   if (link.targetType === 'product') return `/p/${link.targetId}`;
   if (link.targetType === 'category') return `/c/${link.targetId}`;
   if (link.targetType === 'brand') return `/b/${link.targetId}`;
   return `/s/${link.code}`;
 }
 
-export function LinksTable({ links, search }: { links: ShortLink[]; search: string }) {
+export function LinksTable({ links, search }: { links: AdminLinkRow[]; search: string }) {
   return (
     <div className="card table-card">
       <div className="table-head">
         <div>
           <h2>Shortlinks</h2>
-          <p className="muted-text">Search by code, canonical URL, target ID, or target slug.</p>
+          <p className="muted-text">Search by code, canonical URL, or target ID.</p>
         </div>
         <form method="get" className="search-form">
           <input name="q" defaultValue={search} placeholder="Search links..." />

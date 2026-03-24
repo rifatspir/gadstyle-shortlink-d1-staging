@@ -1,30 +1,19 @@
-Build: build8-hotfix2-phase3-shortlink-reliability
-Base: gadstyle-shortlink-service-build7-web-fallback-install-ux.zip
-Scope: Phase 3 Build 1 - shortlink reliability, self-heal, and cache hardening only
+PATCH: Phase 4 Fix 1
+BASELINE: gadstyle-shortlink-d1-staging-phase4.zip
+APPLIED_DIRECTLY_ON_TOP_OF_PREVIOUS_STABLE: YES
 
-Modified Files:
-- lib/public-shortlinks.ts
-- app/api/shortlinks/route.ts
-- app/api/shortlinks/resolve/route.ts
-- app/p/[id]/page.tsx
-- app/c/[id]/page.tsx
-- app/b/[id]/page.tsx
-- app/s/[code]/page.tsx
-- PATCH_MANIFEST.txt
+MODIFIED FILES:
+- lib/validations.ts
+- app/api/admin/links/route.ts
+- README.md
 
-Added Files:
+ADDED FILES:
 - none
 
-Deleted Files:
+DELETED FILES:
 - none
 
-Notes:
-- Adds self-heal update for reusable active records when canonical URL, target slug, or app path drifted.
-- Forces public shortlink create/resolve and landing pages to no-store / dynamic behavior to reduce stale Vercel or browser cache behavior.
-- No dashboard/admin actions changed in this build.
-
-
-Hotfix 3:
-- Shortlink self-heal no longer trusts incoming app_path for public links.
-- Public product/category/brand targets now always enforce canonical ID-based app paths: /p/{id}, /c/{id}, /b/{id}.
-- Prevents stale or malformed upstream app_path values from breaking working brand/category deeplinks.
+SUMMARY:
+- Fixed staging create-form validation to accept real Gadstyle product/category/brand URL patterns.
+- Increased code length limit to avoid false rejections on longer human-readable codes.
+- Replaced generic validation response with the first real field-specific error.

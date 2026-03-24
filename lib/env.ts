@@ -21,4 +21,5 @@ export const env = {
   adminPasswordHash: process.env.ADMIN_PASSWORD_HASH,
   adminPassword: process.env.ADMIN_PASSWORD,
   directUrl: process.env.DIRECT_URL,
+  shortlinkApiBaseUrl: process.env.SHORTLINK_API_BASE_URL?.replace(/\/$/, '') || null,
 };

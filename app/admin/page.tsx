@@ -1,11 +1,35 @@
+
 import { prisma } from '@/lib/prisma';
 import { StatCard } from '@/components/StatCard';
-import { LinksTable } from '@/components/LinksTable';
-import { RecentClicks } from '@/components/RecentClicks';
+import { LinksTable, type AdminLinkRow } from '@/components/LinksTable';
+import { RecentClicks, type AdminRecentClickRow } from '@/components/RecentClicks';
+import { env } from '@/lib/env';
+import { fetchWorkerAdminLinks, fetchWorkerAdminStats, fetchWorkerRecentClicks } from '@/lib/worker-admin';
 
 export default async function AdminDashboard({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const params = await searchParams;
   const search = (params.q || '').trim();
+
+  if (env.shortlinkApiBaseUrl) {
+    const [stats, links, recentClicks] = await Promise.all([
+      fetchWorkerAdminStats(),
+      fetchWorkerAdminLinks(search),
+      fetchWorkerRecentClicks(),
+    ]);
+
+    return (
+      <section className="dashboard-grid">
+        <div className="stats-grid">
+          <StatCard label="Total links" value={stats.totalLinks} hint="All product, category, and brand shortlinks in D1." />
+          <StatCard label="Total clicks" value={stats.totalClicks} hint="D1 click analytics are optional in this phase and may remain 0." />
+          <StatCard label="Recent clicks" value={stats.recentClicks} hint="Recent click activity from D1." />
+        </div>
+
+        <LinksTable links={links as AdminLinkRow[]} search={search} />
+        <RecentClicks clicks={recentClicks as AdminRecentClickRow[]} />
+      </section>
+    );
+  }
 
   const where = search
     ? {
@@ -46,8 +70,8 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
         <StatCard label="Recent clicks" value={recentClicksCount} hint="Clicks from the last 7 days." />
       </div>
 
-      <LinksTable links={links} search={search} />
-      <RecentClicks clicks={recentClicks} />
+      <LinksTable links={links as AdminLinkRow[]} search={search} />
+      <RecentClicks clicks={recentClicks as AdminRecentClickRow[]} />
     </section>
   );
 }
