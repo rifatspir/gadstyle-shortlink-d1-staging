@@ -17,3 +17,7 @@ SUMMARY:
 - Fixed staging create-form validation to accept real Gadstyle product/category/brand URL patterns.
 - Increased code length limit to avoid false rejections on longer human-readable codes.
 - Replaced generic validation response with the first real field-specific error.
+
+
+Phase 4 Fix 2
+- Fixed TypeScript build error in lib/public-validations.ts by removing invalid .pick() usage on a ZodEffects schema and replacing it with a standalone public schema compatible with Next.js production build.
