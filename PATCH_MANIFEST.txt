@@ -22,3 +22,5 @@ Notes:
 Phase 3 compile hotfix:
 - Escaped JSX text issue in LinkForm supported patterns hint by using plain brace text.
 - No routing or API contract changes.
+
+Additional fix: replaced placeholder branding with uploaded Gadstyle Shortlink logo and icon assets; favicon/apple icon now generated from supplied icon.

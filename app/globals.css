@@ -648,3 +648,50 @@ label span {
     grid-template-columns: 1fr;
   }
 }
+
+
+.brand-logo {
+  display: block;
+  height: auto;
+  width: auto;
+}
+
+.header-brand-logo {
+  width: min(100%, 522px);
+  max-width: 522px;
+}
+
+.login-branding {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.login-icon {
+  width: 96px;
+  height: 96px;
+  border-radius: 24px;
+  flex: 0 0 auto;
+  box-shadow: 0 12px 28px rgba(12, 23, 55, 0.14);
+}
+
+.login-brand-logo {
+  width: min(100%, 420px);
+  max-width: 420px;
+}
+
+@media (max-width: 820px) {
+  .header-brand-logo {
+    max-width: 360px;
+  }
+
+  .login-branding {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .login-brand-logo {
+    max-width: 320px;
+  }
+}

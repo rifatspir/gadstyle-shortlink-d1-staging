@@ -1,10 +1,4 @@
-function BrandMark() {
-  return (
-    <div className="brand-mark large" aria-hidden="true">
-      <span>GS</span>
-    </div>
-  );
-}
+import Image from 'next/image';
 
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ error?: string; next?: string }> }) {
   const params = await searchParams;
@@ -14,14 +8,25 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
     <main className="login-wrap">
       <section className="card login-card">
         <div className="login-branding">
-          <BrandMark />
-          <div>
-            <p className="eyebrow">Gadstyle Internal</p>
-            <h1>Shortlink Admin</h1>
-          </div>
+          <Image
+            src="/icon-512.png"
+            alt="Gadstyle Shortlink icon"
+            width={96}
+            height={96}
+            className="login-icon"
+            priority
+          />
+          <Image
+            src="/gadstyle-shortlink-logo.png"
+            alt="Gadstyle Shortlink"
+            width={522}
+            height={128}
+            className="brand-logo login-brand-logo"
+            priority
+          />
         </div>
         <p className="muted-text login-help">
-          Lightweight admin for ID-based product, category, and brand shortlinks. Current production stack stays Vercel + Worker + D1.
+          Internal admin for ID-based product, category, and brand shortlinks. Live stack stays Vercel + Cloudflare Worker + D1.
         </p>
 
         <form action="/api/auth/login" method="post" className="login-form">

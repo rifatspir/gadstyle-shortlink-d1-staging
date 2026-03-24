@@ -1,22 +1,18 @@
+import Image from 'next/image';
 import Link from 'next/link';
-
-function BrandMark() {
-  return (
-    <div className="brand-mark" aria-hidden="true">
-      <span>GS</span>
-    </div>
-  );
-}
 
 export function Header() {
   return (
     <header className="site-header">
       <div className="brand-lockup">
-        <BrandMark />
-        <div>
-          <p className="eyebrow">Gadstyle</p>
-          <h1>Shortlink Service</h1>
-        </div>
+        <Image
+          src="/gadstyle-shortlink-logo.png"
+          alt="Gadstyle Shortlink"
+          width={522}
+          height={128}
+          className="brand-logo header-brand-logo"
+          priority
+        />
       </div>
       <nav className="top-nav">
         <Link href="/admin">Dashboard</Link>

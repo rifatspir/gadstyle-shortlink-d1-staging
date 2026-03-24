@@ -5,9 +5,12 @@ export const metadata: Metadata = {
   title: 'Gadstyle Shortlink Service',
   description: 'Lightweight shortlink management and redirect service for Gadstyle.',
   icons: {
-    icon: '/icon.svg',
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/icon-512.png', type: 'image/png', sizes: '512x512' },
+    ],
     shortcut: '/favicon.ico',
-    apple: '/apple-icon.svg',
+    apple: '/apple-touch-icon.png',
   },
 };
 
