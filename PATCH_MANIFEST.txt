@@ -17,3 +17,8 @@ Notes:
 - Routing contract remains unchanged and ID-based.
 - Branding polish added with lightweight in-app vector assets only; no heavy external image assets added.
 - Worker and Flutter app unchanged in this phase.
+
+
+Phase 3 compile hotfix:
+- Escaped JSX text issue in LinkForm supported patterns hint by using plain brace text.
+- No routing or API contract changes.

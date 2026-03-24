@@ -180,7 +180,7 @@ export function LinkForm() {
             </p>
           ) : (
             <p className="muted-text parser-hint">
-              Supported patterns: /item/{{id}}/{{slug}}, /category/.../{{id}}, /brand/{{slug}}/{{id}}
+              Supported patterns: /item/{id}/{slug}, /category/.../{id}, /brand/{slug}/{id}
             </p>
           )}
         </div>
