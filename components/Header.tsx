@@ -17,6 +17,7 @@ export function Header() {
       <nav className="top-nav">
         <Link href="/admin">Dashboard</Link>
         <Link href="/admin/links/new">Create Link</Link>
+        <Link href="/admin/security">Security</Link>
         <form action="/api/auth/logout" method="post">
           <button type="submit" className="ghost-button">Logout</button>
         </form>

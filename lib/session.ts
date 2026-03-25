@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { env } from '@/lib/env';
@@ -12,7 +13,7 @@ function getSecretKey() {
 }
 
 export async function createSessionToken(username: string) {
-  return new SignJWT({ role: 'admin', username, stage: 'full' })
+  return new SignJWT({ role: 'admin', username, stage: 'full', sid: crypto.randomUUID() })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime(`${SESSION_DURATION_SECONDS}s`)
@@ -20,7 +21,7 @@ export async function createSessionToken(username: string) {
 }
 
 export async function createPreAuthToken(username: string, nextPath: string) {
-  return new SignJWT({ role: 'admin', username, stage: 'preauth', nextPath })
+  return new SignJWT({ role: 'admin', username, stage: 'preauth', nextPath, nonce: crypto.randomUUID() })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime(`${PREAUTH_DURATION_SECONDS}s`)

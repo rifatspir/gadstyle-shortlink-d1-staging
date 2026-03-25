@@ -4,13 +4,19 @@ import { SignJWT, jwtVerify } from 'jose';
 import { env } from '@/lib/env';
 
 const LOGIN_GUARD_COOKIE = 'gadstyle_login_guard';
-const MAX_FAILURES = 5;
+const MAX_LOGIN_FAILURES = 5;
+const MAX_VERIFY_FAILURES = 6;
 const LOCK_MINUTES = 15;
 
+type StageKey = 'login' | 'verify';
+
 type GuardState = {
-  attempts: number;
-  lockUntil?: number;
+  loginAttempts: number;
+  verifyAttempts: number;
+  loginLockUntil?: number;
+  verifyLockUntil?: number;
   lastIp?: string;
+  lastUsername?: string;
 };
 
 function getSecretKey() {
@@ -18,16 +24,19 @@ function getSecretKey() {
 }
 
 async function readGuardState(raw?: string | null): Promise<GuardState> {
-  if (!raw) return { attempts: 0 };
+  if (!raw) return { loginAttempts: 0, verifyAttempts: 0 };
   try {
     const result = await jwtVerify(raw, getSecretKey());
     return {
-      attempts: Number(result.payload.attempts || 0),
-      lockUntil: result.payload.lockUntil ? Number(result.payload.lockUntil) : undefined,
+      loginAttempts: Number(result.payload.loginAttempts || 0),
+      verifyAttempts: Number(result.payload.verifyAttempts || 0),
+      loginLockUntil: result.payload.loginLockUntil ? Number(result.payload.loginLockUntil) : undefined,
+      verifyLockUntil: result.payload.verifyLockUntil ? Number(result.payload.verifyLockUntil) : undefined,
       lastIp: result.payload.lastIp ? String(result.payload.lastIp) : undefined,
+      lastUsername: result.payload.lastUsername ? String(result.payload.lastUsername) : undefined,
     };
   } catch {
-    return { attempts: 0 };
+    return { loginAttempts: 0, verifyAttempts: 0 };
   }
 }
 
@@ -43,27 +52,13 @@ function getClientIp(request: NextRequest) {
   return request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
 }
 
-export async function getLoginGuardStatus(request: NextRequest) {
+async function getState() {
   const cookieStore = await cookies();
-  const state = await readGuardState(cookieStore.get(LOGIN_GUARD_COOKIE)?.value || null);
-  const now = Date.now();
-  return {
-    isLocked: Boolean(state.lockUntil && state.lockUntil > now),
-    retryAt: state.lockUntil,
-    attempts: state.attempts,
-  };
+  return readGuardState(cookieStore.get(LOGIN_GUARD_COOKIE)?.value || null);
 }
 
-export async function registerFailedLogin(request: NextRequest) {
+async function setState(nextState: GuardState) {
   const cookieStore = await cookies();
-  const state = await readGuardState(cookieStore.get(LOGIN_GUARD_COOKIE)?.value || null);
-  const ip = getClientIp(request);
-  const attempts = (state.lastIp && state.lastIp !== ip) ? 1 : (state.attempts + 1);
-  const nextState: GuardState = {
-    attempts,
-    lastIp: ip,
-    lockUntil: attempts >= MAX_FAILURES ? Date.now() + (LOCK_MINUTES * 60 * 1000) : undefined,
-  };
   cookieStore.set(LOGIN_GUARD_COOKIE, await writeGuardState(nextState), {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -71,6 +66,43 @@ export async function registerFailedLogin(request: NextRequest) {
     path: '/',
     maxAge: 60 * 60 * 24 * 30,
   });
+}
+
+export async function getLoginGuardStatus(request: NextRequest, stage: StageKey = 'login') {
+  const state = await getState();
+  const now = Date.now();
+  const retryAt = stage === 'login' ? state.loginLockUntil : state.verifyLockUntil;
+  return {
+    isLocked: Boolean(retryAt && retryAt > now),
+    retryAt,
+    attempts: stage === 'login' ? state.loginAttempts : state.verifyAttempts,
+  };
+}
+
+export async function registerFailedLogin(request: NextRequest, stage: StageKey = 'login', username = '') {
+  const state = await getState();
+  const ip = getClientIp(request);
+  const sameActor = (!state.lastIp || state.lastIp === ip) && (!username || !state.lastUsername || state.lastUsername === username);
+  const loginAttempts = stage === 'login'
+    ? (sameActor ? state.loginAttempts + 1 : 1)
+    : state.loginAttempts;
+  const verifyAttempts = stage === 'verify'
+    ? (sameActor ? state.verifyAttempts + 1 : 1)
+    : state.verifyAttempts;
+
+  const nextState: GuardState = {
+    loginAttempts,
+    verifyAttempts,
+    lastIp: ip,
+    lastUsername: username || state.lastUsername,
+    loginLockUntil: stage === 'login' && loginAttempts >= MAX_LOGIN_FAILURES
+      ? Date.now() + (LOCK_MINUTES * 60 * 1000)
+      : state.loginLockUntil,
+    verifyLockUntil: stage === 'verify' && verifyAttempts >= MAX_VERIFY_FAILURES
+      ? Date.now() + (LOCK_MINUTES * 60 * 1000)
+      : state.verifyLockUntil,
+  };
+  await setState(nextState);
 }
 
 export async function clearLoginGuard() {

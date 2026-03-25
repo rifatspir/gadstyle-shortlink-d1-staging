@@ -28,8 +28,12 @@ export async function verifyLoginCredentials(username: string, password: string)
   return verifyHashOrPlain(password, env.adminPasswordHash);
 }
 
+export function hasValidTwoFactorSecret() {
+  return isLikelyBase32Secret(env.admin2faSecret);
+}
+
 export function isTwoFactorRequired() {
-  return env.admin2faEnabled && !env.admin2faBypass && !env.adminForce2faReset && isLikelyBase32Secret(env.admin2faSecret);
+  return env.admin2faEnabled && !env.admin2faBypass && !env.adminForce2faReset && hasValidTwoFactorSecret();
 }
 
 export async function verifyTwoFactorToken(token: string) {
@@ -48,7 +52,7 @@ export async function verifyRecoveryCode(code: string) {
 }
 
 export function getTwoFactorSetupDetails() {
-  if (!env.admin2faSecret || !isLikelyBase32Secret(env.admin2faSecret)) return null;
+  if (!env.admin2faSecret || !hasValidTwoFactorSecret()) return null;
   return {
     secret: env.admin2faSecret,
     otpauthUrl: buildOtpAuthUrl({
@@ -58,5 +62,19 @@ export function getTwoFactorSetupDetails() {
     }),
     bypassEnabled: env.admin2faBypass,
     resetRequested: env.adminForce2faReset,
+  };
+}
+
+export function getAdminSecurityStatus() {
+  return {
+    username: env.adminUsername,
+    twoFactorEnabled: env.admin2faEnabled,
+    twoFactorActive: isTwoFactorRequired(),
+    bypassEnabled: env.admin2faBypass,
+    resetRequested: env.adminForce2faReset,
+    recoveryInputEnabled: env.admin2faRecoveryInputEnabled,
+    hasSecret: hasValidTwoFactorSecret(),
+    hasRecoveryCodes: env.adminRecoveryCodes.length > 0,
+    issuer: env.admin2faIssuer,
   };
 }

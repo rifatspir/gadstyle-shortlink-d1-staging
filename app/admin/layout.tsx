@@ -1,4 +1,5 @@
 import { Header } from '@/components/Header';
+import { SecurityStatusBanner } from '@/components/SecurityStatusBanner';
 import { getSessionFromCookies } from '@/lib/session';
 import { redirect } from 'next/navigation';
 
@@ -11,6 +12,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <main className="page-shell">
       <Header />
+      <SecurityStatusBanner />
       {children}
     </main>
   );
