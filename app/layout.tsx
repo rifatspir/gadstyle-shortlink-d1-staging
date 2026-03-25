@@ -1,9 +1,10 @@
+
 import './globals.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Gadstyle Shortlink Service',
-  description: 'Lightweight shortlink management and redirect service for Gadstyle.',
+  title: 'Gadstyle App Shortlink Server',
+  description: 'Shortlink server and app landing for the Gadstyle app.',
   icons: {
     icon: [
       { url: '/favicon.ico' },
@@ -22,7 +23,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <footer className="site-footer">
+          <span>Developed by </span>
+          <a href="https://marbwp.com/" target="_blank" rel="noreferrer">MARB</a>
+        </footer>
+      </body>
     </html>
   );
 }

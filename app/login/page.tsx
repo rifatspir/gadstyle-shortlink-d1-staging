@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ error?: string; next?: string }> }) {
@@ -7,15 +8,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   return (
     <main className="login-wrap">
       <section className="card login-card">
-        <div className="login-branding">
-          <Image
-            src="/icon-512.png"
-            alt="Gadstyle Shortlink icon"
-            width={96}
-            height={96}
-            className="login-icon"
-            priority
-          />
+        <div className="login-branding single-logo-branding">
           <Image
             src="/gadstyle-shortlink-logo.png"
             alt="Gadstyle Shortlink"
@@ -26,7 +19,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           />
         </div>
         <p className="muted-text login-help">
-          Internal admin for ID-based product, category, and brand shortlinks. Live stack stays Vercel + Cloudflare Worker + D1.
+          Shortlink server provided for Gadstyle app.
         </p>
 
         <form action="/api/auth/login" method="post" className="login-form">

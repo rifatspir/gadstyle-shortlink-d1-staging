@@ -1,26 +1,18 @@
-Phase 3 - Easier admin creation + branding polish
 
-Modified files:
+Build: service-patch-root-promo-login-footer
+Base: gadstyle-shortlink-service-phase3-branding-d1-ui-fix.zip
+Modified:
+- app/page.tsx
+- app/login/page.tsx
 - app/layout.tsx
 - app/globals.css
-- app/login/page.tsx
-- components/Header.tsx
-- components/LinkForm.tsx
-
-Added files:
-- app/icon.svg
-- app/apple-icon.svg
-- app/favicon.ico
-
+Added:
+- app/not-found.tsx
+- components/PromoRedirect.tsx
 Notes:
-- Canonical URL paste now auto-detects target type, numeric ID, display slug, app path, and default code style.
-- Routing contract remains unchanged and ID-based.
-- Branding polish added with lightweight in-app vector assets only; no heavy external image assets added.
-- Worker and Flutter app unchanged in this phase.
-
-
-Phase 3 compile hotfix:
-- Escaped JSX text issue in LinkForm supported patterns hint by using plain brace text.
-- No routing or API contract changes.
-
-Additional fix: replaced placeholder branding with uploaded Gadstyle Shortlink logo and icon assets; favicon/apple icon now generated from supplied icon.
+- Root path now shows Gadstyle app promo landing instead of redirecting to /admin.
+- Admin remains protected at /admin and other protected routes.
+- Unmatched paths now show a brief redirect state and send visitors to root promo page.
+- Public shortlink/direct-link routes remain unchanged: /p/{id}, /c/{id}, /b/{id}, /s/{code}.
+- Login page now uses a single logo and updated short description.
+- Global footer added with Developed by MARB link.
