@@ -1,8 +1,15 @@
 import bcrypt from 'bcryptjs';
 import { env } from '@/lib/env';
+import { buildOtpAuthUrl, isLikelyBase32Secret, verifyTotpToken } from '@/lib/totp';
 
 function looksLikeBcryptHash(value: string) {
   return /^\$2[aby]\$\d{2}\$/.test(value);
+}
+
+async function verifyHashOrPlain(candidate: string, stored: string) {
+  if (!stored) return false;
+  if (!looksLikeBcryptHash(stored)) return candidate === stored;
+  return bcrypt.compare(candidate, stored);
 }
 
 export async function verifyLoginCredentials(username: string, password: string) {
@@ -18,9 +25,38 @@ export async function verifyLoginCredentials(username: string, password: string)
     return false;
   }
 
-  if (!looksLikeBcryptHash(env.adminPasswordHash)) {
-    return password === env.adminPasswordHash;
-  }
+  return verifyHashOrPlain(password, env.adminPasswordHash);
+}
 
-  return bcrypt.compare(password, env.adminPasswordHash);
+export function isTwoFactorRequired() {
+  return env.admin2faEnabled && !env.admin2faBypass && !env.adminForce2faReset && isLikelyBase32Secret(env.admin2faSecret);
+}
+
+export async function verifyTwoFactorToken(token: string) {
+  if (!isTwoFactorRequired()) return true;
+  return verifyTotpToken(env.admin2faSecret, token);
+}
+
+export async function verifyRecoveryCode(code: string) {
+  if (!code.trim()) return false;
+  for (const stored of env.adminRecoveryCodes) {
+    if (await verifyHashOrPlain(code.trim(), stored)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export function getTwoFactorSetupDetails() {
+  if (!env.admin2faSecret || !isLikelyBase32Secret(env.admin2faSecret)) return null;
+  return {
+    secret: env.admin2faSecret,
+    otpauthUrl: buildOtpAuthUrl({
+      accountName: env.adminUsername,
+      issuer: env.admin2faIssuer,
+      secret: env.admin2faSecret,
+    }),
+    bypassEnabled: env.admin2faBypass,
+    resetRequested: env.adminForce2faReset,
+  };
 }

@@ -1106,3 +1106,52 @@ label span {
     width: calc(100% - 20px);
   }
 }
+
+
+.inside-login-credit {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 14px;
+  color: #7b7b7b;
+}
+
+.inside-login-credit a {
+  color: #111;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.verify-card {
+  max-width: 560px;
+}
+
+.verify-title {
+  font-size: 28px;
+  line-height: 1.15;
+  margin: 0 0 8px;
+}
+
+.compact-branding {
+  margin-bottom: 8px;
+}
+
+.twofa-help {
+  margin-top: 18px;
+  border-top: 1px solid rgba(17,17,17,0.08);
+  padding-top: 14px;
+}
+
+.twofa-help summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.twofa-help-body {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+.code-wrap {
+  word-break: break-all;
+}

@@ -1,18 +1,29 @@
+Build: phase5-admin-security-phase1-2
 
-Build: service-patch-root-promo-login-footer
-Base: gadstyle-shortlink-service-phase3-branding-d1-ui-fix.zip
-Modified:
-- app/page.tsx
+Modified files:
 - app/login/page.tsx
-- app/layout.tsx
 - app/globals.css
-Added:
-- app/not-found.tsx
-- components/PromoRedirect.tsx
+- app/api/auth/login/route.ts
+- lib/auth.ts
+- lib/env.ts
+- lib/session.ts
+- .env.example
+
+Added files:
+- lib/totp.ts
+- lib/login-guard.ts
+- app/login/verify/page.tsx
+- app/api/auth/verify-2fa/route.ts
+
+Behavior summary:
+- moved login credit into login card just below the login button
+- shortened admin session duration and kept secure cookie flags
+- added generic-failure login guard with temporary lockout after repeated failures
+- added TOTP two-factor verification compatible with Google Authenticator/Authy
+- added recovery-code support through environment configuration
+- added environment-based 2FA bypass/reset compatibility for emergency recovery
+
 Notes:
-- Root path now shows Gadstyle app promo landing instead of redirecting to /admin.
-- Admin remains protected at /admin and other protected routes.
-- Unmatched paths now show a brief redirect state and send visitors to root promo page.
-- Public shortlink/direct-link routes remain unchanged: /p/{id}, /c/{id}, /b/{id}, /s/{code}.
-- Login page now uses a single logo and updated short description.
-- Global footer added with Developed by MARB link.
+- public routes /p/{id}, /c/{id}, /b/{id}, /s/{code} are unchanged
+- worker and D1 behavior are unchanged
+- website frontend is untouched

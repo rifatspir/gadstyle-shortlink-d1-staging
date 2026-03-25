@@ -35,7 +35,8 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           <button type="submit" className="primary-button">Login</button>
         </form>
 
-        {params.error ? <p className="error-text">Invalid username or password.</p> : null}
+        {params.error ? <p className="error-text">Sign-in failed. Please check your credentials or try again shortly.</p> : null}
+        <p className="login-credit inside-login-credit">Developed by <a href="https://marbwp.com/" target="_blank" rel="noreferrer">MARB</a></p>
       </section>
     </main>
   );
