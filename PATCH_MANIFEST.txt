@@ -27,3 +27,8 @@ Notes:
 - public routes /p/{id}, /c/{id}, /b/{id}, /s/{code} are unchanged
 - worker and D1 behavior are unchanged
 - website frontend is untouched
+
+
+Phase 5 hotfix:
+- Removed visible 2FA setup/recovery secret details from verify page.
+- Recovery code input now appears only when ADMIN_2FA_RECOVERY_INPUT_ENABLED=true.

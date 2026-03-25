@@ -24,6 +24,7 @@ export const env = {
   adminForce2faReset: getBooleanEnv('ADMIN_FORCE_2FA_RESET', false),
   admin2faSecret: process.env.ADMIN_2FA_SECRET || '',
   admin2faIssuer: process.env.ADMIN_2FA_ISSUER || 'Gadstyle Shortlink',
+  admin2faRecoveryInputEnabled: getBooleanEnv('ADMIN_2FA_RECOVERY_INPUT_ENABLED', false),
   adminRecoveryCodes: (process.env.ADMIN_2FA_RECOVERY_CODES || '')
     .split(',')
     .map((code) => code.trim())

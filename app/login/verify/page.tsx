@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { getPreAuthFromCookies } from '@/lib/session';
-import { getTwoFactorSetupDetails } from '@/lib/auth';
+import { env } from '@/lib/env';
 import { redirect } from 'next/navigation';
 
 export default async function VerifyTwoFactorPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
@@ -9,7 +9,6 @@ export default async function VerifyTwoFactorPage({ searchParams }: { searchPara
   if (!preauth) {
     redirect('/login');
   }
-  const setup = getTwoFactorSetupDetails();
 
   return (
     <main className="login-wrap">
@@ -25,25 +24,16 @@ export default async function VerifyTwoFactorPage({ searchParams }: { searchPara
             <span>Authenticator code</span>
             <input type="text" name="token" inputMode="numeric" autoComplete="one-time-code" required maxLength={6} />
           </label>
-          <label>
-            <span>Recovery code</span>
-            <input type="text" name="recovery_code" placeholder="Use only if authenticator is unavailable" />
-          </label>
+          {env.admin2faRecoveryInputEnabled ? (
+            <label>
+              <span>Recovery code</span>
+              <input type="text" name="recovery_code" placeholder="Use only if authenticator is unavailable" />
+            </label>
+          ) : null}
           <button type="submit" className="primary-button">Verify and continue</button>
         </form>
 
         {params.error ? <p className="error-text">Invalid verification code.</p> : null}
-        {setup ? (
-          <details className="twofa-help">
-            <summary>Authenticator setup and recovery notes</summary>
-            <div className="twofa-help-body">
-              <p>Add this account in Google Authenticator/Authy using the secret below or the otpauth link.</p>
-              <p><strong>Secret:</strong> <code>{setup.secret}</code></p>
-              <p><strong>OTP URI:</strong> <code className="code-wrap">{setup.otpauthUrl}</code></p>
-              <p className="muted-text">Emergency recovery can be done from Vercel env by setting ADMIN_2FA_BYPASS=true temporarily, then redeploying.</p>
-            </div>
-          </details>
-        ) : null}
 
         <p className="login-credit inside-login-credit">Developed by <Link href="https://marbwp.com/" target="_blank" rel="noreferrer">MARB</Link></p>
       </section>
