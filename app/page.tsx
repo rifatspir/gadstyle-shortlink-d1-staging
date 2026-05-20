@@ -1,10 +1,22 @@
 
-import Link from 'next/link';
 import Image from 'next/image';
 
-const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.gadstylebd.app';
-const APP_STORE_URL = process.env.IOS_APP_STORE_URL || 'https://www.apple.com/app-store/';
-const WEBSITE_URL = 'https://www.gadstyle.com/';
+const getEnvValue = (key: string, fallback: string) => {
+  const value = process.env[key]?.trim();
+  return value && value.length > 0 ? value : fallback;
+};
+
+const PLAY_STORE_URL = getEnvValue(
+  'PLAY_STORE_URL',
+  'https://play.google.com/store/apps/details?id=com.gadstylebd.app',
+);
+const APP_STORE_URL = getEnvValue('IOS_APP_STORE_URL', 'https://www.apple.com/app-store/');
+const WEBSITE_URL = getEnvValue('WEBSITE_URL', 'https://www.gadstyle.com/');
+
+const PLAY_STORE_KICKER = getEnvValue('PLAY_STORE_KICKER', 'Get it on');
+const PLAY_STORE_LABEL = getEnvValue('PLAY_STORE_LABEL', 'Google Play');
+const APP_STORE_KICKER = getEnvValue('APP_STORE_KICKER', 'Download on the');
+const APP_STORE_LABEL = getEnvValue('APP_STORE_LABEL', 'App Store');
 
 export default function HomePage() {
   return (
@@ -20,23 +32,18 @@ export default function HomePage() {
 
           <div className="promo-actions">
             <a className="store-button store-play" href={PLAY_STORE_URL} target="_blank" rel="noreferrer">
-              <span className="store-kicker">Get it on</span>
-              <strong>Google Play</strong>
+              <span className="store-kicker">{PLAY_STORE_KICKER}</span>
+              <strong>{PLAY_STORE_LABEL}</strong>
             </a>
             <a className="store-button store-apple" href={APP_STORE_URL} target="_blank" rel="noreferrer">
-              <span className="store-kicker">Download on the</span>
-              <strong>App Store</strong>
+              <span className="store-kicker">{APP_STORE_KICKER}</span>
+              <strong>{APP_STORE_LABEL}</strong>
             </a>
             <a className="ghost-button website-button" href={WEBSITE_URL} target="_blank" rel="noreferrer">
               Visit website
             </a>
           </div>
 
-          <div className="promo-points">
-            <div className="promo-point"><strong>ID-based links</strong><span>/p, /c, /b, /s stay unchanged</span></div>
-            <div className="promo-point"><strong>Fast app opens</strong><span>Built for Gadstyle app deeplinks</span></div>
-            <div className="promo-point"><strong>Safe fallback</strong><span>Invalid paths can return visitors here</span></div>
-          </div>
         </div>
 
         <div className="promo-visual" aria-hidden="true">
@@ -72,16 +79,6 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section className="promo-bottom card">
-        <div>
-          <h2>Built as a mobile-first landing and fallback page</h2>
-          <p className="muted-text">
-            Root visits can promote the app, while admin stays protected at <Link href="/admin">/admin</Link>.
-            Invalid unmatched paths can safely return here without affecting shortlink generation or resolution.
-          </p>
         </div>
       </section>
     </main>
