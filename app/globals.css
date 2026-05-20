@@ -742,8 +742,9 @@ label span {
 
 .promo-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.04fr) minmax(360px, 0.96fr);
-  gap: 34px;
+  grid-template-columns: minmax(0, 520px) minmax(420px, 1fr);
+  align-items: center;
+  gap: 44px;
   padding: 34px;
   overflow: hidden;
   position: relative;
@@ -767,10 +768,85 @@ label span {
 
 .promo-copy,
 .promo-visual {
+  position: relative;
+  z-index: 1;
+}
+
+.promo-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 18px;
+  min-height: 560px;
+  max-width: 520px;
+  padding: 6px 0;
+}
+
+.promo-copy h1 {
+  margin: 0;
+  font-size: clamp(36px, 5vw, 72px);
+  line-height: 0.96;
+  letter-spacing: -0.05em;
+  max-width: 520px;
+}
+
+.promo-text {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #555;
+  max-width: 500px;
+}
+
+.promo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+}
+
+.store-button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 180px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: var(--shadow-md);
+  background: #fff;
+}
+
+.store-play {
+  background: linear-gradient(135deg, #111827 0%, #0f172a 100%);
+  color: #fff;
+}
+
+.store-apple {
+  background: linear-gradient(135deg, #14c8b3 0%, #4fc7ff 100%);
+  color: #06131f;
+}
+
+.store-kicker {
+  font-size: 11px;
+  opacity: 0.78;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.website-button {
+  flex: 0 0 auto;
+  padding: 14px 18px;
+  border-radius: 16px;
+}
+
+.promo-visual {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 600px;
+  min-height: 560px;
 }
 
 .promo-device-stack {
@@ -861,38 +937,6 @@ label span {
   border-radius: 38px;
 }
 
-.promo-visual-badge {
-  position: absolute;
-  left: 50%;
-  bottom: 6%;
-  transform: translateX(-50%);
-  display: inline-flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 240px;
-  padding: 14px 18px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: var(--shadow-md);
-  text-align: center;
-  backdrop-filter: blur(14px);
-  z-index: 4;
-}
-
-.promo-visual-badge span {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--accent);
-  text-transform: uppercase;
-}
-
-.promo-visual-badge strong {
-  font-size: 15px;
-  line-height: 1.35;
-}
-
 .promo-bottom {
   margin-top: 18px;
   padding: 24px 28px;
@@ -934,6 +978,16 @@ label span {
 @media (max-width: 1040px) {
   .promo-hero {
     grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .promo-copy {
+    min-height: auto;
+    max-width: 100%;
+  }
+
+  .promo-text {
+    max-width: 620px;
   }
 
   .promo-visual {

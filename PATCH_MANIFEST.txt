@@ -1,25 +1,22 @@
-Patch: step02
+Patch: step03
 Project: gadstyle-shortlink-d1-staging
-Baseline: app-patch-step01 / original gadstyle-shortlink-d1-staging.zip
+Baseline: app-patch-step02
 Type: patch-only
 
 Changed files:
 - app/page.tsx
-  - Replaced the dummy homepage phone mockup with real iPhone-style showcase devices using real app screenshots.
-  - Preserved environment-variable driven store buttons and website button.
+  - Removed the overlay badge text block from the homepage phone mockup.
 - app/globals.css
-  - Added styling for the new three-device iPhone-style showcase layout and responsive behavior.
-- public/homepage-showcase/cart-screen.webp
-  - Added optimized real cart screen asset for homepage showcase.
-- public/homepage-showcase/home-screen.webp
-  - Added optimized real home screen asset for homepage showcase.
-- public/homepage-showcase/search-screen.webp
-  - Added optimized real search screen asset for homepage showcase.
+  - Fixed the hero layout regression introduced in step02.
+  - Restored the left content column to proper vertical stacking.
+  - Rebalanced desktop hero grid widths so headline, description, and store buttons render correctly.
+  - Kept the real iPhone-style screenshot showcase on the right.
 - PATCH_MANIFEST.txt
-  - Updated for step02.
+  - Updated for step03.
 
 Unchanged behavior / safety:
 - No shortlink routing logic changes.
 - No admin/auth/security flow changes.
 - No D1 contract changes.
 - No worker API contract changes.
+- No environment variable behavior changes for store links.

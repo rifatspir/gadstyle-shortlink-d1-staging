@@ -83,10 +83,6 @@ export default function HomePage() {
                 </div>
               </div>
             ))}
-            <div className="promo-visual-badge">
-              <span>Real app screens</span>
-              <strong>Home, search, and cart preview</strong>
-            </div>
           </div>
         </div>
       </section>
