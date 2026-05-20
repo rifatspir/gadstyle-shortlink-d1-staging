@@ -22,10 +22,22 @@ export type WorkerAdminClick = {
   };
 };
 
+export type WorkerAdminSmartDownloadSource = {
+  source: string;
+  count: number;
+};
+
 export type WorkerAdminStats = {
   totalLinks: number;
   totalClicks: number;
   recentClicks: number;
+  smartDownloads?: {
+    totalRequests: number;
+    androidRedirects: number;
+    iosRedirects: number;
+    fallbackViews: number;
+    sources: WorkerAdminSmartDownloadSource[];
+  };
 };
 
 export type WorkerAdminPagination = {

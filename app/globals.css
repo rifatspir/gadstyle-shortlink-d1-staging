@@ -137,6 +137,29 @@ input, select, button {
   gap: 14px;
 }
 
+
+.download-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.smart-download-card .stat-card {
+  box-shadow: var(--shadow-sm);
+}
+
+.smart-source-wrap {
+  display: grid;
+  gap: 10px;
+}
+
+.smart-source-wrap h3 {
+  margin: 0;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+}
+
 /* ─── Stat card ──────────────────────────────────────────────────────── */
 
 .stat-card {
@@ -532,6 +555,7 @@ label span {
 
 @media (max-width: 900px) {
   .stats-grid,
+  .download-stats-grid,
   .grid-form {
     grid-template-columns: 1fr;
   }

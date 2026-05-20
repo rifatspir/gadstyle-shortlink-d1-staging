@@ -21,15 +21,26 @@ const APP_STORE_LABEL = getEnvValue('APP_STORE_LABEL', 'App Store');
 
 const BOT_USER_AGENT_PATTERN = /(bot|crawl|spider|slurp|facebookexternalhit|telegrambot|whatsapp|twitterbot|linkedinbot|preview)/i;
 
-const getSmartDownloadTarget = (userAgent: string) => {
-  if (!userAgent || BOT_USER_AGENT_PATTERN.test(userAgent)) {
-    return null;
+type SmartDownloadDecision = {
+  targetUrl: string | null;
+  destination: 'play_store' | 'app_store' | 'fallback';
+  deviceType: 'android' | 'ios' | 'desktop' | 'unknown' | 'bot';
+  shouldLog: boolean;
+};
+
+const getSmartDownloadDecision = (userAgent: string): SmartDownloadDecision => {
+  if (!userAgent) {
+    return { targetUrl: null, destination: 'fallback', deviceType: 'unknown', shouldLog: true };
+  }
+
+  if (BOT_USER_AGENT_PATTERN.test(userAgent)) {
+    return { targetUrl: null, destination: 'fallback', deviceType: 'bot', shouldLog: false };
   }
 
   const normalizedUserAgent = userAgent.toLowerCase();
 
   if (normalizedUserAgent.includes('android')) {
-    return PLAY_STORE_URL;
+    return { targetUrl: PLAY_STORE_URL, destination: 'play_store', deviceType: 'android', shouldLog: true };
   }
 
   if (
@@ -38,10 +49,62 @@ const getSmartDownloadTarget = (userAgent: string) => {
     normalizedUserAgent.includes('ipod') ||
     (normalizedUserAgent.includes('macintosh') && normalizedUserAgent.includes('mobile'))
   ) {
-    return APP_STORE_URL;
+    return { targetUrl: APP_STORE_URL, destination: 'app_store', deviceType: 'ios', shouldLog: true };
   }
 
-  return null;
+  return { targetUrl: null, destination: 'fallback', deviceType: 'desktop', shouldLog: true };
+};
+
+const normalizeSource = (value: string | null) => {
+  if (!value) return 'direct';
+  if (/^https?:\/\//i.test(value)) {
+    try {
+      return new URL(value).hostname.replace(/^www\./, '').toLowerCase() || 'direct';
+    } catch {
+      return 'direct';
+    }
+  }
+  return value.toLowerCase().replace(/[^a-z0-9._:-]/g, '').slice(0, 120) || 'direct';
+};
+
+const getSearchValue = (value: string | string[] | undefined) => Array.isArray(value) ? value[0] : value;
+
+const getSmartDownloadSource = (requestHeaders: Headers, params: Record<string, string | string[] | undefined>) => {
+  const utmSource = getSearchValue(params.utm_source)?.trim();
+  if (utmSource) return normalizeSource(`utm:${utmSource}`);
+  return normalizeSource(requestHeaders.get('referer'));
+};
+
+const logSmartDownloadEvent = async (decision: SmartDownloadDecision, source: string) => {
+  if (!decision.shouldLog) return;
+
+  const apiBaseUrl = process.env.SHORTLINK_API_BASE_URL?.trim().replace(/\/$/, '');
+  if (!apiBaseUrl) return;
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 650);
+
+  try {
+    const headers: Record<string, string> = { 'content-type': 'application/json' };
+    const secret = process.env.SMART_DOWNLOAD_LOG_SECRET?.trim();
+    if (secret) headers['x-smart-download-secret'] = secret;
+
+    await fetch(`${apiBaseUrl}/api/download-events`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        destination: decision.destination,
+        device_type: decision.deviceType,
+        source,
+      }),
+      cache: 'no-store',
+      signal: controller.signal,
+    });
+  } catch {
+    // Redirect/report logging must never block the public landing page.
+  } finally {
+    clearTimeout(timeout);
+  }
 };
 
 
@@ -118,12 +181,20 @@ function LandingHomePage() {
   );
 }
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const requestHeaders = await headers();
-  const targetUrl = getSmartDownloadTarget(requestHeaders.get('user-agent') ?? '');
+  const params = searchParams ? await searchParams : {};
+  const decision = getSmartDownloadDecision(requestHeaders.get('user-agent') ?? '');
+  const source = getSmartDownloadSource(requestHeaders, params);
 
-  if (targetUrl) {
-    redirect(targetUrl);
+  await logSmartDownloadEvent(decision, source);
+
+  if (decision.targetUrl) {
+    redirect(decision.targetUrl);
   }
 
   return <LandingHomePage />;

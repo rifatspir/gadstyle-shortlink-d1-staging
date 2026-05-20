@@ -126,6 +126,11 @@ export function AdminDashboardClient({ initialSearch = '' }: { initialSearch?: s
     totalLinks: stats?.totalLinks ?? '—',
     totalClicks: stats?.totalClicks ?? '—',
     recentClicks: stats?.recentClicks ?? '—',
+    smartTotalRequests: stats?.smartDownloads?.totalRequests ?? '—',
+    smartAndroidRedirects: stats?.smartDownloads?.androidRedirects ?? '—',
+    smartIosRedirects: stats?.smartDownloads?.iosRedirects ?? '—',
+    smartFallbackViews: stats?.smartDownloads?.fallbackViews ?? '—',
+    smartSources: stats?.smartDownloads?.sources ?? [],
   }), [stats]);
 
   return (
@@ -134,6 +139,56 @@ export function AdminDashboardClient({ initialSearch = '' }: { initialSearch?: s
         <StatCard label="Total links" value={statsCards.totalLinks} hint={statsLoading ? 'Refreshing…' : statsError || 'All product, category, and brand shortlinks in D1.'} />
         <StatCard label="Total clicks" value={statsCards.totalClicks} hint={statsLoading ? 'Refreshing…' : statsError || 'Aggregate click counts stored on shortlinks.'} />
         <StatCard label="Recent clicks" value={statsCards.recentClicks} hint={statsLoading ? 'Refreshing…' : statsError || 'Recent click rows retained in lightweight rolling history.'} />
+      </div>
+
+      <div className="card table-card smart-download-card">
+        <div className="table-head">
+          <div>
+            <h2>Smart download report</h2>
+            <p className="muted-text">Lightweight root-link report for Android, iOS, desktop fallback, and top traffic sources.</p>
+          </div>
+        </div>
+
+        {statsError ? <p className="error-text inline-error">{statsError}</p> : null}
+
+        <div className="download-stats-grid">
+          <StatCard label="Total requests" value={statsCards.smartTotalRequests} hint={statsLoading ? 'Refreshing…' : 'Root app.gadstyle.com visits logged.'} />
+          <StatCard label="Android store" value={statsCards.smartAndroidRedirects} hint={statsLoading ? 'Refreshing…' : 'Users redirected to Google Play.'} />
+          <StatCard label="App Store" value={statsCards.smartIosRedirects} hint={statsLoading ? 'Refreshing…' : 'Users redirected to Apple App Store.'} />
+          <StatCard label="Fallback views" value={statsCards.smartFallbackViews} hint={statsLoading ? 'Refreshing…' : 'Desktop or unknown users shown landing page.'} />
+        </div>
+
+        <div className="smart-source-wrap">
+          <h3>Top sources</h3>
+          <div className="responsive-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Source</th>
+                  <th>Requests</th>
+                </tr>
+              </thead>
+              <tbody>
+                {statsLoading ? (
+                  <tr>
+                    <td colSpan={2} className="empty-cell">Loading smart download sources…</td>
+                  </tr>
+                ) : statsCards.smartSources.length === 0 ? (
+                  <tr>
+                    <td colSpan={2} className="empty-cell">No smart download source data yet.</td>
+                  </tr>
+                ) : (
+                  statsCards.smartSources.map((source) => (
+                    <tr key={source.source}>
+                      <td>{source.source}</td>
+                      <td>{source.count}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
       <LinksTable

@@ -1,21 +1,27 @@
-Patch: step04
+Patch: step05
 Project: gadstyle-shortlink-d1-staging
-Baseline: app-patch-step03
+Baseline: app-patch-step04
 Type: patch-only
 
 Changed files:
 - app/page.tsx
-  - Added OneLink-style smart root redirect behavior for https://app.gadstyle.com/.
-  - Android user agents redirect to PLAY_STORE_URL.
-  - iPhone/iPad/iPod user agents redirect to IOS_APP_STORE_URL.
-  - Desktop, unknown, and preview/bot user agents keep the normal app.gadstyle.com landing page.
-  - Preserved the existing desktop landing page layout and env-driven store buttons.
+  - Logs lightweight smart-download events before Android/iOS redirects and desktop/unknown fallback rendering.
+  - Uses SHORTLINK_API_BASE_URL and optional SMART_DOWNLOAD_LOG_SECRET without blocking the public page beyond a short timeout.
+  - Does not log preview/bot user agents.
+- components/AdminDashboardClient.tsx
+  - Adds Smart download report panel to the admin dashboard.
+  - Shows total root requests, Android store redirects, App Store redirects, fallback views, and top sources.
+- lib/worker-admin.ts
+  - Extends admin stats typing for smart-download report data.
+- app/globals.css
+  - Adds responsive dashboard styles for the smart-download report cards and source table.
+- .env.example
+  - Adds optional SMART_DOWNLOAD_LOG_SECRET placeholder.
 - PATCH_MANIFEST.txt
-  - Updated for step04.
+  - Updated for step05.
 
 Unchanged behavior / safety:
-- No product/category/brand/shortlink route changes.
-- No admin/auth/security flow changes.
-- No D1 contract changes.
-- No worker API contract changes.
-- No environment variable names changed.
+- No shortlink route behavior changed.
+- No product/category/brand direct resolver behavior changed.
+- No admin authentication/session behavior changed.
+- No D1 write is performed on preview/bot traffic.
