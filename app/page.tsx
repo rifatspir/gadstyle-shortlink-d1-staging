@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 const getEnvValue = (key: string, fallback: string) => {
   const value = process.env[key]?.trim();
@@ -16,6 +18,32 @@ const PLAY_STORE_KICKER = getEnvValue('PLAY_STORE_KICKER', 'Get it on');
 const PLAY_STORE_LABEL = getEnvValue('PLAY_STORE_LABEL', 'Google Play');
 const APP_STORE_KICKER = getEnvValue('APP_STORE_KICKER', 'Download on the');
 const APP_STORE_LABEL = getEnvValue('APP_STORE_LABEL', 'App Store');
+
+const BOT_USER_AGENT_PATTERN = /(bot|crawl|spider|slurp|facebookexternalhit|telegrambot|whatsapp|twitterbot|linkedinbot|preview)/i;
+
+const getSmartDownloadTarget = (userAgent: string) => {
+  if (!userAgent || BOT_USER_AGENT_PATTERN.test(userAgent)) {
+    return null;
+  }
+
+  const normalizedUserAgent = userAgent.toLowerCase();
+
+  if (normalizedUserAgent.includes('android')) {
+    return PLAY_STORE_URL;
+  }
+
+  if (
+    normalizedUserAgent.includes('iphone') ||
+    normalizedUserAgent.includes('ipad') ||
+    normalizedUserAgent.includes('ipod') ||
+    (normalizedUserAgent.includes('macintosh') && normalizedUserAgent.includes('mobile'))
+  ) {
+    return APP_STORE_URL;
+  }
+
+  return null;
+};
+
 
 const HERO_SCREENS = [
   {
@@ -38,7 +66,7 @@ const HERO_SCREENS = [
   },
 ] as const;
 
-export default function HomePage() {
+function LandingHomePage() {
   return (
     <main className="promo-page">
       <section className="promo-hero card">
@@ -88,4 +116,15 @@ export default function HomePage() {
       </section>
     </main>
   );
+}
+
+export default async function HomePage() {
+  const requestHeaders = await headers();
+  const targetUrl = getSmartDownloadTarget(requestHeaders.get('user-agent') ?? '');
+
+  if (targetUrl) {
+    redirect(targetUrl);
+  }
+
+  return <LandingHomePage />;
 }

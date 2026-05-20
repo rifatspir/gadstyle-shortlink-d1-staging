@@ -1,22 +1,21 @@
-Patch: step03
+Patch: step04
 Project: gadstyle-shortlink-d1-staging
-Baseline: app-patch-step02
+Baseline: app-patch-step03
 Type: patch-only
 
 Changed files:
 - app/page.tsx
-  - Removed the overlay badge text block from the homepage phone mockup.
-- app/globals.css
-  - Fixed the hero layout regression introduced in step02.
-  - Restored the left content column to proper vertical stacking.
-  - Rebalanced desktop hero grid widths so headline, description, and store buttons render correctly.
-  - Kept the real iPhone-style screenshot showcase on the right.
+  - Added OneLink-style smart root redirect behavior for https://app.gadstyle.com/.
+  - Android user agents redirect to PLAY_STORE_URL.
+  - iPhone/iPad/iPod user agents redirect to IOS_APP_STORE_URL.
+  - Desktop, unknown, and preview/bot user agents keep the normal app.gadstyle.com landing page.
+  - Preserved the existing desktop landing page layout and env-driven store buttons.
 - PATCH_MANIFEST.txt
-  - Updated for step03.
+  - Updated for step04.
 
 Unchanged behavior / safety:
-- No shortlink routing logic changes.
+- No product/category/brand/shortlink route changes.
 - No admin/auth/security flow changes.
 - No D1 contract changes.
 - No worker API contract changes.
-- No environment variable behavior changes for store links.
+- No environment variable names changed.
