@@ -3,39 +3,45 @@ import './globals.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Gadstyle App Download',
+  title: {
+    default: 'Gadstyle App Download',
+    template: '%s | Gadstyle App Download',
+  },
   description:
-    'Download the Gadstyle app for faster mobile shopping in Bangladesh. Browse gadgets, electronics, accessories, home products, flash deals, coupons, order tracking, categories, brands, and product links from your phone.',
+    'Download the Gadstyle app for faster mobile shopping in Bangladesh. Browse gadgets, electronics, accessories, home products, flash deals, coupons, order tracking, categories, brands, and direct product links from your phone.',
   applicationName: 'Gadstyle App Download',
   openGraph: {
     title: 'Gadstyle App Download',
     description:
-      'Download the Gadstyle app for faster shopping, app-only browsing, flash deals, coupons, order tracking, categories, brands, and direct product links.',
+      'Download the Gadstyle app for faster shopping, flash deals, coupons, order tracking, categories, brands, and direct product links.',
     siteName: 'Gadstyle App Download',
     type: 'website',
     images: [
       {
-        url: '/icon-512.png',
-        width: 512,
-        height: 512,
-        alt: 'Gadstyle App Download',
+        url: '/gadstyle-app-download-preview.png',
+        width: 1200,
+        height: 630,
+        alt: 'Gadstyle App Download preview',
       },
     ],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'Gadstyle App Download',
     description:
       'Download the Gadstyle app for faster shopping, flash deals, coupons, order tracking, and direct product links.',
-    images: ['/icon-512.png'],
+    images: ['/gadstyle-app-download-preview.png'],
   },
   icons: {
     icon: [
-      { url: '/favicon.ico' },
-      { url: '/icon-512.png', type: 'image/png', sizes: '512x512' },
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/gadstyle-app-icon-192.png', type: 'image/png', sizes: '192x192' },
+      { url: '/gadstyle-app-icon-512.png', type: 'image/png', sizes: '512x512' },
     ],
     shortcut: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180' },
+    ],
   },
 };
 
