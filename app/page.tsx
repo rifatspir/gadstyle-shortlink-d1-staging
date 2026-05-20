@@ -1,6 +1,10 @@
 import Image from 'next/image';
+import { SmartDownloadFallbackLogger } from '@/components/SmartDownloadFallbackLogger';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 const getEnvValue = (key: string, fallback: string) => {
   const value = process.env[key]?.trim();
@@ -82,7 +86,7 @@ const logSmartDownloadEvent = async (decision: SmartDownloadDecision, source: st
   if (!apiBaseUrl) return;
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 650);
+  const timeout = setTimeout(() => controller.abort(), 2000);
 
   try {
     const headers: Record<string, string> = { 'content-type': 'application/json' };
@@ -129,9 +133,18 @@ const HERO_SCREENS = [
   },
 ] as const;
 
-function LandingHomePage() {
+function LandingHomePage({
+  fallbackSource,
+  fallbackDeviceType,
+  shouldLogFallback,
+}: {
+  fallbackSource: string;
+  fallbackDeviceType: 'desktop' | 'unknown';
+  shouldLogFallback: boolean;
+}) {
   return (
     <main className="promo-page">
+      <SmartDownloadFallbackLogger source={fallbackSource} deviceType={fallbackDeviceType} enabled={shouldLogFallback} />
       <section className="promo-hero card">
         <div className="promo-copy">
           <p className="eyebrow">Gadstyle App Download</p>
@@ -191,11 +204,18 @@ export default async function HomePage({
   const decision = getSmartDownloadDecision(requestHeaders.get('user-agent') ?? '');
   const source = getSmartDownloadSource(requestHeaders, params);
 
-  await logSmartDownloadEvent(decision, source);
-
   if (decision.targetUrl) {
+    await logSmartDownloadEvent(decision, source);
     redirect(decision.targetUrl);
   }
 
-  return <LandingHomePage />;
+  const fallbackDeviceType = decision.deviceType === 'desktop' ? 'desktop' : 'unknown';
+
+  return (
+    <LandingHomePage
+      fallbackSource={source}
+      fallbackDeviceType={fallbackDeviceType}
+      shouldLogFallback={decision.shouldLog}
+    />
+  );
 }

@@ -1,40 +1,23 @@
-Patch: step07
+Patch: step08
 Project: gadstyle-shortlink-d1-staging
-Baseline: step06 patch on top of step05 stable full
+Baseline: gadstyle-shortlink-d1-staging-step07-stable-full.zip
 Type: patch-only
 
 Changed files:
-- app/layout.tsx
-  - Updated metadata icon and social preview settings to use Gadstyle App Download branding.
-  - Changed Open Graph/Twitter preview image from the large square app icon to a proper 1200x630 branded preview image.
-  - Updated browser/app icons to the uploaded Gadstyle app logo assets.
-- app/icon.svg
-  - Replaced old shortlink-style SVG icon with the uploaded Gadstyle app logo embedded for Next metadata/icon route compatibility.
-- app/apple-icon.svg
-  - Replaced old shortlink-style SVG apple icon with the uploaded Gadstyle app logo embedded for Next metadata/icon route compatibility.
-- app/favicon.ico
-  - Replaced browser favicon with the uploaded Gadstyle app logo.
-- public/favicon.ico
-  - Replaced public favicon with the uploaded Gadstyle app logo.
-- public/icon-512.png
-  - Replaced old shortlink icon with the uploaded Gadstyle app logo.
-- public/apple-touch-icon.png
-  - Replaced Apple touch icon with optimized 180x180 Gadstyle app logo.
-- public/gadstyle-app-icon-192.png
-  - Added 192x192 browser/app icon asset.
-- public/gadstyle-app-icon-512.png
-  - Added 512x512 browser/app icon asset.
-- public/gadstyle-app-download-preview.png
-  - Added 1200x630 Open Graph/Twitter/SMS preview image so the app logo appears smaller and cleaner in link previews.
-- public/gadstyle-app-download-square-preview.png
-  - Added optional compact square preview asset for future use if needed.
+- app/page.tsx
+  - Forced dynamic/no-store rendering for the root smart-download landing page.
+  - Increased server-side mobile redirect logging timeout from 650ms to 2000ms.
+  - Logs Android/iOS store redirects server-side before redirecting.
+  - Uses a client-side fallback logger for desktop/unknown landing views so fallback report counts update reliably even when the landing page is shown.
+- app/api/download-events/route.ts
+  - Added a lightweight public Vercel proxy endpoint for fallback landing-view reporting only.
+  - Forwards sanitized fallback events to the Worker without exposing SMART_DOWNLOAD_LOG_SECRET to the browser.
+- components/SmartDownloadFallbackLogger.tsx
+  - Added tiny client component using sendBeacon/fetch keepalive to record desktop/unknown fallback landing views.
 - PATCH_MANIFEST.txt
-  - Updated for step07.
+  - Updated for step08.
 
 Unchanged behavior / safety:
-- No smart redirect logic changes.
-- No smart-download reporting changes.
-- No shortlink routing changes.
-- No admin/auth/security flow changes.
-- No D1 contract changes.
-- No worker API contract changes.
+- Existing /admin, /p, /c, /b, and /s routes are unchanged.
+- Android/iOS smart redirect behavior remains unchanged.
+- No IP address or full user-agent is stored.
