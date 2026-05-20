@@ -1,27 +1,25 @@
-Patch: step05
+Patch: step06
 Project: gadstyle-shortlink-d1-staging
-Baseline: app-patch-step04
+Baseline: gadstyle-shortlink-d1-staging-step05-stable-full.zip
 Type: patch-only
 
 Changed files:
 - app/page.tsx
-  - Logs lightweight smart-download events before Android/iOS redirects and desktop/unknown fallback rendering.
-  - Uses SHORTLINK_API_BASE_URL and optional SMART_DOWNLOAD_LOG_SECRET without blocking the public page beyond a short timeout.
-  - Does not log preview/bot user agents.
-- components/AdminDashboardClient.tsx
-  - Adds Smart download report panel to the admin dashboard.
-  - Shows total root requests, Android store redirects, App Store redirects, fallback views, and top sources.
-- lib/worker-admin.ts
-  - Extends admin stats typing for smart-download report data.
+  - Renamed landing content from shortlink-server wording to Gadstyle App Download wording.
+  - Replaced homepage paragraph with SEO-friendly app download details focused on mobile shopping, gadgets, deals, coupons, order tracking, categories, brands, and product links.
+- app/layout.tsx
+  - Updated page title to Gadstyle App Download.
+  - Added SEO description, applicationName, Open Graph, and Twitter metadata for app download landing.
 - app/globals.css
-  - Adds responsive dashboard styles for the smart-download report cards and source table.
-- .env.example
-  - Adds optional SMART_DOWNLOAD_LOG_SECRET placeholder.
+  - Improved mobile landing layout and CTA sizing.
+  - Made Google Play, App Store, and Visit website buttons more compact and mobile-friendly.
+  - Reduced mobile hero spacing so the phone mockup appears cleaner below the buttons.
 - PATCH_MANIFEST.txt
-  - Updated for step05.
+  - Updated for step06.
 
 Unchanged behavior / safety:
+- No smart redirect decision logic changed.
+- No smart download reporting logic changed.
 - No shortlink route behavior changed.
-- No product/category/brand direct resolver behavior changed.
-- No admin authentication/session behavior changed.
-- No D1 write is performed on preview/bot traffic.
+- No admin/auth/security flow changed.
+- No D1 or Worker API contract changed.

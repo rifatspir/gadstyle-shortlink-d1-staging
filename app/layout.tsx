@@ -3,8 +3,32 @@ import './globals.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Gadstyle App Shortlink Server',
-  description: 'Shortlink server and app landing for the Gadstyle app.',
+  title: 'Gadstyle App Download',
+  description:
+    'Download the Gadstyle app for faster mobile shopping in Bangladesh. Browse gadgets, electronics, accessories, home products, flash deals, coupons, order tracking, categories, brands, and product links from your phone.',
+  applicationName: 'Gadstyle App Download',
+  openGraph: {
+    title: 'Gadstyle App Download',
+    description:
+      'Download the Gadstyle app for faster shopping, app-only browsing, flash deals, coupons, order tracking, categories, brands, and direct product links.',
+    siteName: 'Gadstyle App Download',
+    type: 'website',
+    images: [
+      {
+        url: '/icon-512.png',
+        width: 512,
+        height: 512,
+        alt: 'Gadstyle App Download',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Gadstyle App Download',
+    description:
+      'Download the Gadstyle app for faster shopping, flash deals, coupons, order tracking, and direct product links.',
+    images: ['/icon-512.png'],
+  },
   icons: {
     icon: [
       { url: '/favicon.ico' },

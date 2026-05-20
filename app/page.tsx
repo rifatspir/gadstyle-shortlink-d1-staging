@@ -134,11 +134,11 @@ function LandingHomePage() {
     <main className="promo-page">
       <section className="promo-hero card">
         <div className="promo-copy">
-          <p className="eyebrow">Gadstyle app</p>
-          <h1>Shop Gadstyle faster on mobile.</h1>
+          <p className="eyebrow">Gadstyle App Download</p>
+          <h1>Download the Gadstyle App.</h1>
           <p className="promo-text">
-            Shortlink server provided for the Gadstyle app. Browse faster, open product links directly in the app,
-            and continue seamlessly on mobile with product, category, brand, and shortlink support.
+            Shop Gadstyle faster from your phone with quick access to gadgets, mobile accessories, electronics,
+            home products, flash deals, coupons, order tracking, categories, brands, and direct product links.
           </p>
 
           <div className="promo-actions">

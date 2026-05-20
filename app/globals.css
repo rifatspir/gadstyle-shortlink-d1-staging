@@ -860,6 +860,12 @@ label span {
   text-transform: uppercase;
 }
 
+.store-button strong,
+.website-button {
+  font-size: 16px;
+  line-height: 1.25;
+}
+
 .website-button {
   flex: 0 0 auto;
   padding: 14px 18px;
@@ -1025,56 +1031,91 @@ label span {
 
 @media (max-width: 680px) {
   .promo-page {
-    width: min(100% - 20px, 100%);
-    padding-top: 18px;
+    width: min(100% - 18px, 100%);
+    padding: 12px 0 26px;
   }
 
   .promo-hero {
-    padding: 20px;
+    padding: 22px 18px 0;
     border-radius: 20px;
+    gap: 18px;
+  }
+
+  .promo-copy {
+    gap: 14px;
+    min-height: auto;
   }
 
   .promo-copy h1 {
-    font-size: 40px;
+    font-size: clamp(34px, 9vw, 42px);
+    line-height: 1;
+    letter-spacing: -0.045em;
+  }
+
+  .promo-text {
+    font-size: 15.5px;
+    line-height: 1.62;
+    max-width: 100%;
   }
 
   .promo-actions {
+    width: 100%;
+    max-width: 320px;
     flex-direction: column;
     align-items: stretch;
+    gap: 10px;
+    margin-top: 4px;
   }
 
   .store-button,
   .website-button {
     width: 100%;
+    min-width: 0;
+    min-height: 60px;
+    padding: 12px 16px;
+    border-radius: 18px;
+  }
+
+  .store-button strong,
+  .website-button {
+    font-size: 15.5px;
+    line-height: 1.2;
+  }
+
+  .store-kicker {
+    font-size: 10px;
+    line-height: 1.2;
   }
 
   .promo-visual {
-    min-height: 460px;
+    min-height: 380px;
+    align-items: flex-end;
+    margin-top: 2px;
   }
 
   .promo-device-stack {
-    min-height: 420px;
+    min-height: 360px;
   }
 
   .promo-device {
-    width: 168px;
+    width: 152px;
     border-radius: 30px;
     padding: 5px;
   }
 
   .promo-device-left {
-    left: 0;
-    top: 18%;
+    left: -12px;
+    top: 23%;
   }
 
   .promo-device-center {
-    width: 205px;
-    top: 8%;
+    width: 190px;
+    top: 5%;
   }
 
   .promo-device-right {
-    right: 0;
-    top: 20%;
+    right: -12px;
+    top: 25%;
   }
 
   .promo-device-frame {
@@ -1095,15 +1136,9 @@ label span {
     border-radius: 25px;
   }
 
-  .promo-visual-badge {
-    min-width: 0;
-    width: min(100%, 260px);
-    bottom: 4%;
-    padding: 12px 14px;
-  }
-
   .site-footer {
     width: calc(100% - 20px);
+    padding-bottom: 24px;
   }
 }
 
