@@ -1,4 +1,3 @@
-
 import Image from 'next/image';
 
 const getEnvValue = (key: string, fallback: string) => {
@@ -17,6 +16,27 @@ const PLAY_STORE_KICKER = getEnvValue('PLAY_STORE_KICKER', 'Get it on');
 const PLAY_STORE_LABEL = getEnvValue('PLAY_STORE_LABEL', 'Google Play');
 const APP_STORE_KICKER = getEnvValue('APP_STORE_KICKER', 'Download on the');
 const APP_STORE_LABEL = getEnvValue('APP_STORE_LABEL', 'App Store');
+
+const HERO_SCREENS = [
+  {
+    key: 'cart',
+    src: '/homepage-showcase/cart-screen.webp',
+    alt: 'Gadstyle iPhone app cart screen preview',
+    className: 'promo-device-left',
+  },
+  {
+    key: 'home',
+    src: '/homepage-showcase/home-screen.webp',
+    alt: 'Gadstyle iPhone app home screen preview',
+    className: 'promo-device-center',
+  },
+  {
+    key: 'search',
+    src: '/homepage-showcase/search-screen.webp',
+    alt: 'Gadstyle iPhone app search screen preview',
+    className: 'promo-device-right',
+  },
+] as const;
 
 export default function HomePage() {
   return (
@@ -43,40 +63,29 @@ export default function HomePage() {
               Visit website
             </a>
           </div>
-
         </div>
 
-        <div className="promo-visual" aria-hidden="true">
+        <div className="promo-visual" aria-label="Gadstyle app preview on iPhone-style devices">
           <div className="promo-device-stack">
-            <div className="promo-device promo-device-back" />
-            <div className="promo-device promo-device-mid" />
-            <div className="promo-device promo-device-front">
-              <div className="promo-device-notch" />
-              <div className="promo-screen">
-                <div className="promo-logo-block">
+            {HERO_SCREENS.map((screen, index) => (
+              <div key={screen.key} className={`promo-device ${screen.className}`}>
+                <div className="promo-device-frame">
+                  <div className="promo-device-notch" />
                   <Image
-                    src="/icon-512.png"
-                    alt="Gadstyle Shortlink"
-                    width={88}
-                    height={88}
-                    className="promo-icon"
-                    priority
+                    src={screen.src}
+                    alt={screen.alt}
+                    width={640}
+                    height={1390}
+                    className="promo-device-image"
+                    priority={index === 1}
+                    sizes="(max-width: 680px) 205px, (max-width: 1040px) 240px, 282px"
                   />
-                  <Image
-                    src="/gadstyle-shortlink-logo.png"
-                    alt="Gadstyle Shortlink"
-                    width={522}
-                    height={128}
-                    className="promo-logo"
-                    priority
-                  />
-                </div>
-                <div className="promo-screen-card">
-                  <span className="promo-chip">Open in app</span>
-                  <h3>Product, category, brand, and shortlink ready</h3>
-                  <p>Optimized for app.gadstyle.com direct and short routes.</p>
                 </div>
               </div>
+            ))}
+            <div className="promo-visual-badge">
+              <span>Real app screens</span>
+              <strong>Home, search, and cart preview</strong>
             </div>
           </div>
         </div>
