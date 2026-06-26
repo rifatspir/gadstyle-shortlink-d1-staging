@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.gadstylebd.app",
+      "sha256_cert_fingerprints": [
+        "6C:AE:FD:1C:99:B4:A9:91:6B:07:24:90:03:EA:19:F3:6D:9B:05:DA:83:AE:71:62:EC:8B:15:AA:8E:43:0D:D0",
+        "20:FB:2C:57:7A:5F:2E:C9:0E:61:63:B2:B5:B6:DB:FD:D2:16:F4:6E:FE:38:EC:C0:76:B4:52:F6:D6:35:81:C6"
+      ]
+    }
+  }
+]

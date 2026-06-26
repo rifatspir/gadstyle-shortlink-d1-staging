@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["VL5JVQG987.com.gadstylebd.app"],
+        "components": [
+          { "/": "/p/*" },
+          { "/": "/c/*" },
+          { "/": "/b/*" },
+          { "/": "/s/*" }
+        ]
+      }
+    ]
+  }
+}
